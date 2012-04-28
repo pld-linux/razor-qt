@@ -1,3 +1,5 @@
+# TODO
+# - merge with razorqt.spec
 %define		qtver	4.6.0
 
 Summary:	Razor-qt desktop environment
