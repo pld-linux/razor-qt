@@ -5,12 +5,12 @@
 Summary:	Razor a lightweight desktop toolbox
 Summary(pl.UTF-8):	Razor jest lekkim zestawem narzędzi na biurko
 Name:		razor-qt
-Version:	0.4.1
+Version:	0.5.2
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://razor-qt.org/downloads/razorqt-%{version}.tar.bz2
-# Source0-md5:	724b5a43ba1e162d70203a32b2bd34ed
+# Source0-md5:	8b2da8ab69065926bfc998cf1960bffb
 URL:		http://www.razor-qt.org/
 BuildRequires:	QtCore-devel >= %{qtver}
 BuildRequires:	QtDBus-devel >= %{qtver}
@@ -21,6 +21,7 @@ BuildRequires:	automoc4
 BuildRequires:	cmake
 BuildRequires:	desktop-file-utils
 BuildRequires:	libmagic-devel
+BuildRequires:	libstatgrab-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	pkgconfig
 BuildRequires:	qt4-build >= %{qtver}
@@ -33,6 +34,7 @@ BuildRequires:	xorg-lib-libXdamage-devel
 BuildRequires:	xorg-lib-libXrender-devel
 Requires:	QtCore >= %{qtver}
 Requires:	QtDBus >= %{qtver}
+Requires:	xdg-utils
 Obsoletes:	razorqt < 0.4
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -63,6 +65,7 @@ Pakiet programistyczny RazorQt.
 install -d build
 cd build
 %cmake .. \
+	-DBUNDLE_XDG_UTILS=No \
 	-DQT_QMAKE_EXECUTABLE=%{_bindir}/qmake-qt4
 
 %{__make}
@@ -75,6 +78,9 @@ rm -rf $RPM_BUILD_ROOT
 # not sure where kdm holds its sessions, so drop for now (it pulls kde otherwise)
 rm -r $RPM_BUILD_ROOT%{_datadir}/apps/kdm/sessions
 
+#%find_lang librazorqt --all-name
+#%find_lang libqtxdg --all-name
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -82,6 +88,7 @@ rm -rf $RPM_BUILD_ROOT
 %postun	-p /sbin/ldconfig
 
 %files
+#-f librazorqt.lang -f libqtxdg.lang
 %defattr(644,root,root,755)
 %doc README
 /etc/xdg/autostart/razor-ptbatterysystemtray-autostart.desktop
@@ -89,7 +96,23 @@ rm -rf $RPM_BUILD_ROOT
 /etc/xdg/autostart/razor-qstardict-autostart.desktop
 /etc/xdg/autostart/razor-qxkb-autostart.desktop
 /etc/xdg/autostart/razor-xscreensaver-autostart.desktop
+/etc/xdg/autostart/razor-appswitcher.desktop
+/etc/xdg/autostart/razor-autosuspend.desktop
+/etc/xdg/autostart/razor-desktop.desktop
+/etc/xdg/autostart/razor-globalkeyshortcuts.desktop
+/etc/xdg/autostart/razor-notifications.desktop
+/etc/xdg/autostart/razor-panel.desktop
+/etc/xdg/autostart/razor-policykit-agent.desktop
+/etc/xdg/autostart/razor-runner.desktop
+
+%dir %{_sysconfdir}/qt4/razor
+%dir %{_sysconfdir}/qt4/razor/razor-panel
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/qt4/razor/*.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/qt4/razor/razor-panel/*.conf
+                                                                
 %{_sysconfdir}/xdg/menus/razor-applications.menu
+%{_sysconfdir}/xdg/menus/razor-config.menu
+
 %attr(755,root,root) %{_bindir}/razor-appswitcher
 %attr(755,root,root) %{_bindir}/razor-autosuspend
 %attr(755,root,root) %{_bindir}/razor-config
@@ -105,6 +128,15 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/razor-session
 %attr(755,root,root) %{_bindir}/razor-x11info
 %attr(755,root,root) %{_bindir}/startrazor
+%attr(755,root,root) %{_bindir}/razor-about
+%attr(755,root,root) %{_bindir}/razor-config-autosuspend
+%attr(755,root,root) %{_bindir}/razor-config-globalkeyshortcuts
+%attr(755,root,root) %{_bindir}/razor-config-notificationd
+%attr(755,root,root) %{_bindir}/razor-confupdate
+%attr(755,root,root) %{_bindir}/razor-globalkeyshortcuts
+%attr(755,root,root) %{_bindir}/razor-lightdm-greeter
+%attr(755,root,root) %{_bindir}/razor-notificationd
+%attr(755,root,root) %{_bindir}/razor-openssh-askpass
 
 %attr(755,root,root) %{_libdir}/libqtxdg.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libqtxdg.so.0
@@ -121,6 +153,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/razor-desktop/libdesktop-wm_native.so
 %attr(755,root,root) %{_libdir}/razor-desktop/libhelloworld.so
 %attr(755,root,root) %{_libdir}/razor-desktop/libiconview.so
+%{_libdir}/razor-desktop/libnotepad.so
+
+%dir %{_libdir}/razor-confupdate_bin
+%{_libdir}/razor-confupdate_bin/sesion_modules
+
 %dir %{_libdir}/razor-panel
 %attr(755,root,root) %{_libdir}/razor-panel/libclock.so
 %attr(755,root,root) %{_libdir}/razor-panel/libdesktopswitch.so
@@ -131,11 +168,18 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/razor-panel/libshowdesktop.so
 %attr(755,root,root) %{_libdir}/razor-panel/libtaskbar.so
 %attr(755,root,root) %{_libdir}/razor-panel/libtray.so
+%{_libdir}/razor-panel/libcolorpicker.so
+%{_libdir}/razor-panel/libcpuload.so
+%{_libdir}/razor-panel/libnetworkmonitor.so
+%{_libdir}/razor-panel/libpanelvolume.so
+%{_libdir}/razor-panel/libsensors.so
 
 %{_iconsdir}/hicolor/scalable/apps/razor-autosuspend.svg
+%{_iconsdir}/hicolor/scalable/apps/laptop-lid.svg
 
 %{_datadir}/razor
 %{_datadir}/desktop-directories/razor*.directory
+%{_datadir}/xgreeters/lightdm-razor-greeter.desktop
 %{_datadir}/xsessions/razor*.desktop
 %{_desktopdir}/razor*.desktop
 
@@ -146,25 +190,25 @@ rm -rf $RPM_BUILD_ROOT
 %lang(el) %{_datadir}/librazorqt/librazorqt_el_GR.qm
 %lang(it) %{_datadir}/librazorqt/librazorqt_it_IT.qm
 %lang(pl) %{_datadir}/librazorqt/librazorqt_pl_PL.qm
-%lang(ru) %{_datadir}/librazorqt/librazorqt_ru_RU.qm
+%lang(ru) %{_datadir}/librazorqt/librazorqt_ru.qm
 %lang(sk) %{_datadir}/librazorqt/librazorqt_sk_SK.qm
 %lang(zh_CN) %{_datadir}/librazorqt/librazorqt_zh_CN.qm
 
-%dir %{_datadir}/qtxdg
-%lang(cs) %{_datadir}/qtxdg/qtxdg_cs_CZ.qm
-%lang(da) %{_datadir}/qtxdg/qtxdg_da_DK.qm
-%lang(de) %{_datadir}/qtxdg/qtxdg_de_DE.qm
-%lang(el) %{_datadir}/qtxdg/qtxdg_el_GR.qm
-%lang(it) %{_datadir}/qtxdg/qtxdg_it_IT.qm
-%lang(pl) %{_datadir}/qtxdg/qtxdg_pl_PL.qm
-%lang(ru) %{_datadir}/qtxdg/qtxdg_ru_RU.qm
-%lang(sk) %{_datadir}/qtxdg/qtxdg_sk_SK.qm
-%lang(zh_CN) %{_datadir}/qtxdg/qtxdg_zh_CN.qm
+%dir %{_datadir}/libqtxdg
+%lang(cs) %{_datadir}/libqtxdg/libqtxdg_cs_CZ.qm
+%lang(da) %{_datadir}/libqtxdg/libqtxdg_da_DK.qm
+%lang(de) %{_datadir}/libqtxdg/libqtxdg_de_DE.qm
+%lang(el) %{_datadir}/libqtxdg/libqtxdg_el_GR.qm
+%lang(it) %{_datadir}/libqtxdg/libqtxdg_it_IT.qm
+%lang(pl) %{_datadir}/libqtxdg/libqtxdg_pl_PL.qm
+%lang(ru) %{_datadir}/libqtxdg/libqtxdg_ru.qm
+%lang(sk) %{_datadir}/libqtxdg/libqtxdg_sk_SK.qm
+%lang(zh_CN) %{_datadir}/libqtxdg/libqtxdg_zh_CN.qm
 
 # temp files - it will be removed when it becomes part of upstream
-%dir %{_libdir}/razor-xdg-tools
-%attr(755,root,root) %{_libdir}/razor-xdg-tools/xdg-mime
-%attr(755,root,root) %{_libdir}/razor-xdg-tools/xdg-open
+#%dir %{_libdir}/razor-xdg-tools
+#%attr(755,root,root) %{_libdir}/razor-xdg-tools/xdg-mime
+#%attr(755,root,root) %{_libdir}/razor-xdg-tools/xdg-open
 
 %files devel
 %defattr(644,root,root,755)
