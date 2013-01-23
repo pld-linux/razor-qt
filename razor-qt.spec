@@ -153,7 +153,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/razor-desktop/libdesktop-wm_native.so
 %attr(755,root,root) %{_libdir}/razor-desktop/libhelloworld.so
 %attr(755,root,root) %{_libdir}/razor-desktop/libiconview.so
-%{_libdir}/razor-desktop/libnotepad.so
+%attr(755,root,root) %{_libdir}/razor-desktop/libnotepad.so
 
 %dir %{_libdir}/razor-confupdate_bin
 %{_libdir}/razor-confupdate_bin/sesion_modules
@@ -168,11 +168,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/razor-panel/libshowdesktop.so
 %attr(755,root,root) %{_libdir}/razor-panel/libtaskbar.so
 %attr(755,root,root) %{_libdir}/razor-panel/libtray.so
-%{_libdir}/razor-panel/libcolorpicker.so
-%{_libdir}/razor-panel/libcpuload.so
-%{_libdir}/razor-panel/libnetworkmonitor.so
-%{_libdir}/razor-panel/libpanelvolume.so
-%{_libdir}/razor-panel/libsensors.so
+%attr(755,root,root) %{_libdir}/razor-panel/libcolorpicker.so
+%attr(755,root,root) %{_libdir}/razor-panel/libcpuload.so
+%attr(755,root,root) %{_libdir}/razor-panel/libnetworkmonitor.so
+%attr(755,root,root) %{_libdir}/razor-panel/libpanelvolume.so
+%attr(755,root,root) %{_libdir}/razor-panel/libsensors.so
 
 %{_iconsdir}/hicolor/scalable/apps/razor-autosuspend.svg
 %{_iconsdir}/hicolor/scalable/apps/laptop-lid.svg
