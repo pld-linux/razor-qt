@@ -34,7 +34,7 @@ BuildRequires:	xorg-lib-libXdamage-devel
 BuildRequires:	xorg-lib-libXrender-devel
 Requires:	QtCore >= %{qtver}
 Requires:	QtDBus >= %{qtver}
-Requires:	xdg-utils
+Requires:	xdg-utils >= 1.1.0-3.rc1
 Obsoletes:	razorqt < 0.4
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
