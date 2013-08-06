@@ -11,6 +11,7 @@ License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://razor-qt.org/downloads/razorqt-%{version}.tar.bz2
 # Source0-md5:	8b2da8ab69065926bfc998cf1960bffb
+Patch0:		lightdm-1.7.patch
 URL:		http://www.razor-qt.org/
 BuildRequires:	QtCore-devel >= %{qtver}
 BuildRequires:	QtDBus-devel >= %{qtver}
@@ -25,6 +26,8 @@ BuildRequires:	libstatgrab-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	lightdm-libs-qt-devel
 BuildRequires:	pkgconfig
+BuildRequires:	polkit-qt-1-agent-devel
+BuildRequires:	polkit-qt-1-devel
 BuildRequires:	qt4-build >= %{qtver}
 BuildRequires:	qt4-linguist
 BuildRequires:	qt4-qmake >= %{qtver}
@@ -61,6 +64,7 @@ Pakiet programistyczny RazorQt.
 
 %prep
 %setup -q -n razorqt-%{version}
+%patch0 -p1
 
 %build
 install -d build
