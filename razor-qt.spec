@@ -23,6 +23,7 @@ BuildRequires:	desktop-file-utils
 BuildRequires:	libmagic-devel
 BuildRequires:	libstatgrab-devel
 BuildRequires:	libstdc++-devel
+BuildRequires:	lightdm-libs-qt-devel
 BuildRequires:	pkgconfig
 BuildRequires:	qt4-build >= %{qtver}
 BuildRequires:	qt4-linguist
@@ -109,7 +110,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_sysconfdir}/qt4/razor/razor-panel
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/qt4/razor/*.conf
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/qt4/razor/razor-panel/*.conf
-                                                                
+
 %{_sysconfdir}/xdg/menus/razor-applications.menu
 %{_sysconfdir}/xdg/menus/razor-config.menu
 
