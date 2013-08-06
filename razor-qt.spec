@@ -6,7 +6,7 @@ Summary:	Razor a lightweight desktop toolbox
 Summary(pl.UTF-8):	Razor jest lekkim zestawem narzędzi na biurko
 Name:		razor-qt
 Version:	0.5.2
-Release:	3
+Release:	4
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://razor-qt.org/downloads/razorqt-%{version}.tar.bz2
