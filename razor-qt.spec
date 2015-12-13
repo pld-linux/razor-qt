@@ -6,12 +6,13 @@ Summary:	Razor a lightweight desktop toolbox
 Summary(pl.UTF-8):	Razor jest lekkim zestawem narzędzi na biurko
 Name:		razor-qt
 Version:	0.5.2
-Release:	5
+Release:	6
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://razor-qt.org/downloads/razorqt-%{version}.tar.bz2
 # Source0-md5:	8b2da8ab69065926bfc998cf1960bffb
 Patch0:		lightdm-1.7.patch
+Patch1:		libstatgrab-0.90.patch
 URL:		http://www.razor-qt.org/
 BuildRequires:	QtCore-devel >= %{qtver}
 BuildRequires:	QtDBus-devel >= %{qtver}
@@ -22,12 +23,13 @@ BuildRequires:	automoc4
 BuildRequires:	cmake
 BuildRequires:	desktop-file-utils
 BuildRequires:	libmagic-devel
-BuildRequires:	libstatgrab-devel
+BuildRequires:	libstatgrab-devel >= 0.90
 BuildRequires:	libstdc++-devel
-BuildRequires:	lightdm-libs-qt-devel
+BuildRequires:	lightdm-libs-qt4-devel
 BuildRequires:	pkgconfig
 BuildRequires:	polkit-qt-1-agent-devel
 BuildRequires:	polkit-qt-1-devel
+BuildRequires:	polkit-qt-1-gui-devel
 BuildRequires:	qt4-build >= %{qtver}
 BuildRequires:	qt4-linguist
 BuildRequires:	qt4-qmake >= %{qtver}
@@ -65,6 +67,7 @@ Pakiet programistyczny RazorQt.
 %prep
 %setup -q -n razorqt-%{version}
 %patch0 -p1
+%patch1 -p1
 
 %build
 install -d build
