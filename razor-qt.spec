@@ -66,8 +66,8 @@ Pakiet programistyczny RazorQt.
 
 %prep
 %setup -q -n razorqt-%{version}
-%patch0 -p1
-%patch1 -p1
+%patch -P0 -p1
+%patch -P1 -p1
 
 %build
 install -d build
